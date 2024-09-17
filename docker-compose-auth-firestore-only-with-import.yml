@@ -1,0 +1,23 @@
+services:
+  firebase:
+    build:
+      context: .
+      dockerfile: Docker-Firebase
+    image: firebase-emulator:latest
+    container_name: firebase-emulator
+    ports:
+      - "9099:9099"   # Authentication
+      - "8080:8080"   # Firestore
+      - "4000:4000"   # UI
+      - "5005:5005"   # web socket for firestore.
+    volumes:
+      - ./firebase:/firebase                 # Mount the 'firebase' folder for data import
+      - ./.firebaserc:/.firebaserc   # Mount the Firebase rc file
+      - ./firebase.json:/firebase.json   # Mount the Firebase config file
+      - ./firestore.rules:/firestore.rules # Optional: Firestore rules
+      - ./firestore.indexes.json:/firestore.indexes.json # Optional: Firestore indexes
+    command: >
+      sh -c "
+      firebase emulators:start --only auth,firestore \
+      --import /firebase
+      "

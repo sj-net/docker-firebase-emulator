@@ -1,0 +1,7 @@
+# this is only to build the image. use docker-compose-auth-firestore-only-with-import.yml as example in your project.
+services:
+  firebase:
+    build:
+      context: .
+      dockerfile: Docker
+    image: firebase-emulator:latest
